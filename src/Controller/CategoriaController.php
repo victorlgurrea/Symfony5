@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoriaController extends AbstractController
 {
-    /** Pruebas
+    /** P
      * @Route("/categoria", name="app_categoria")
      */
     public function index(): Response
