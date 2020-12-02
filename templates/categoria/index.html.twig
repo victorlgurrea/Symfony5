@@ -1,20 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategoriaController!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Projecto/Symfony/Symfony5/subastas/src/Controller/CategoriaController.php'|file_link(0) }}">src/Controller/CategoriaController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Projecto/Symfony/Symfony5/subastas/templates/categoria/index.html.twig'|file_link(0) }}">templates/categoria/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block contenedor_principal %}
+    <h1>Listado categorias</h1>
+    
+    {% include 'comunes/_mensajes.html.twig' %}
+    
+    <table class="table">
+        <thead class="text-center">
+            <th>Nombre</th>
+            <th>Color</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody>
+            {% for categoria in categorias %}
+                <tr>
+                    <td>{{ categoria.nombre }}</td>
+                    <td>{{ categoria.color }}</td>
+                    <td class="text-right">
+                        <a class="btn btn-warning" href="{{ path('app_editar_categoria', {'id': categoria.id })}}"><i class="fas fa-pencil-alt"></i></a>
+                        <a class="btn btn-danger" href="{{ path('app_eliminar_categoria', {'id': categoria.id })}}"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Sin registros</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ <a class="btn btn-info" href="{{ path('app_nueva_categoria')}}" title="Añadir categoría"><i class="fas fa-plus-circle"></i></a>
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nueva subasta{% endblock %}
+
+{% block contenedor_principal %}
+    <h1>Crear nueva subasta</h1>
+
+    {{ include('marcador/_form.html.twig') }}
+
+    <a href="{{ path('app_index') }}">voler al listado</a>
+{% endblock %}
