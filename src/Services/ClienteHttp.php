@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Exception;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\HttpClient\TraceableHttpClient;
 
 class ClienteHttp
 {
@@ -27,6 +26,5 @@ class ClienteHttp
         }
 
         return $codigoEstado;
-
     }
 }

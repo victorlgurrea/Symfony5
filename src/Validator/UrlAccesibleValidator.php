@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Services\ClienteHttp;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -10,7 +10,7 @@ class UrlAccesibleValidator extends ConstraintValidator
 {
     private $clienteHttp;
 
-    public function __construct(HttpClientInterface $clienteHttp)
+    public function __construct(ClienteHttp $clienteHttp)
     {
         $this->clienteHttp = $clienteHttp;
     }
@@ -22,7 +22,6 @@ class UrlAccesibleValidator extends ConstraintValidator
         if (null === $value || '' === $value) {
             return;
         }
-
         $codigoEstado = $this->clienteHttp->obtenerCodigoUrl($value);
 
         if ($codigoEstado === null) {

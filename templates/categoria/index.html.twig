@@ -17,8 +17,8 @@
                     <td>{{ categoria.nombre }}</td>
                     <td>{{ categoria.color }}</td>
                     <td class="text-right">
-                        <a class="btn btn-warning" href="{{ path('app_editar_categoria', {'id': categoria.id })}}"><i class="fas fa-pencil-alt"></i></a>
-                        <a class="btn btn-danger" href="{{ path('app_eliminar_categoria', {'id': categoria.id })}}"><i class="fas fa-trash"></i></a>
+                        <a class="btn" href="{{ path('app_editar_categoria', {'id': categoria.id })}}"><i class="fas fa-pencil-alt" style="color:orange;"></i></a>
+                        <a class="btn" href="{{ path('app_eliminar_categoria', {'id': categoria.id })}}"><i class="fas fa-trash" style="color:red;"></i></a>
                     </td>
                 </tr>
             {% else %}
