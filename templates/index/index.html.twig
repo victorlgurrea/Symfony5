@@ -5,7 +5,7 @@
 
     <div class="my-3 p-3 bg-white rounded box-shadow">
     <h6 class="border-bottom border-gray pb-2 mb-0">
-      Mis marcadores
+      Subastas
     </h6>
   
   {% for marcador in marcadores %}
@@ -31,7 +31,7 @@
                 class="btn mg-3 mr-3 favorito {{ marcador.favorito ? 'activo' }}">
                 <span class="oi oi-star" title="favorito" aria-hidden="true" style="cursor:pointer;"></span>
             </a>             
-            <a href="{{ path('marcador_edit', {'id': marcador.id}) }}" class="btn mg-3 mr-3">
+            <a href="{{ path('marcador_edit', {'id': marcador.id}) }}" class="btn mg-3 mr-3" title="editar subasta">
                 <i class="fas fa-pencil-alt" style="color:orange"></i>
             </a>
 
@@ -40,6 +40,17 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="mt-3">
+    {{
+      include("comunes/_paginacion.html.twig", {
+          "elementos_por_pagina":elementos_por_pagina,
+          "numero_total_elementos":marcadores.count,
+          "pagina_actual": pagina
+        }
+      )
+    }}
     </div>
     {% else %}
       <p>No se han encontrado registros</p>

@@ -12,15 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
+    public const ELEMENTOS_POR_PAGINA = 4;
  /**
-    * @Route("/buscar/{busqueda}", 
+    * @Route("/buscar/{busqueda}/{pagina}", 
     * name="app_busqueda",
     * defaults = {
-    *    "busqueda" : ""
-    *   } 
+    *    "busqueda" : "",
+    *    "pagina": 1
+    *  },
+    *  requirements = {"pagina"="\d+"}
     * )
     */
-    public function busqueda(string $busqueda, MarcadorRepository $marcadorRepository, Request $request)
+    public function busqueda(string $busqueda, int $pagina, MarcadorRepository $marcadorRepository, Request $request)
     {
         $formularioBusqueda = $this->createForm(BuscadorType::class);
         $formularioBusqueda->handleRequest($request);
@@ -36,14 +39,20 @@ class IndexController extends AbstractController
         }
 
         if (! empty($busqueda)) {
-            $marcadores = $marcadorRepository->buscarPorNombre($busqueda);
+            $marcadores = $marcadorRepository->buscarPorNombre($busqueda, $pagina, self::ELEMENTOS_POR_PAGINA);
             
         }
 
         if (! empty($busqueda) || $formularioBusqueda->isSubmitted()) {
+            
             return $this->render("index/index.html.twig", [
                 'formulario_busqueda' => $formularioBusqueda->createView(),
-                'marcadores' => $marcadores
+                'marcadores' => $marcadores,
+                'pagina' => $pagina,
+                'elementos_por_pagina' => self::ELEMENTOS_POR_PAGINA,
+                'parametros_ruta' => [
+                    "busqueda" => $busqueda
+                ]
             ]);
         }
 
@@ -79,41 +88,60 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/favoritos", name="app_favoritos")
+     * @Route(
+     * "/favoritos/{pagina}", 
+     * name="app_favoritos",
+     * defaults = {
+     *      "pagina": 1,
+     *  },
+     *  requirements = {"pagina"="\d+"}
+     * )
      */
-    public function favoritos(MarcadorRepository $marcadorRepository)
+    public function favoritos(int $pagina, MarcadorRepository $marcadorRepository)
     {
-        $marcadores = $marcadorRepository->findBy([
-                        "favorito" => true
-                    ]);
+        $marcadores = $marcadorRepository->buscarPorFavoritos($pagina, self::ELEMENTOS_POR_PAGINA);
 
         return $this->render('index/index.html.twig', [
             'marcadores' => $marcadores,
+            'pagina' => $pagina,
+            'elementos_por_pagina' => self::ELEMENTOS_POR_PAGINA
         ]);
     }
 
     /** Panel
      * @Route(
-     * "/{categoria}", 
+     * "/{categoria}/{pagina}", 
      * name="app_index",
      * defaults = {
-     *      "categoria": ""
-     *  }
+     *      "categoria": "todas",
+     *      "pagina": 1,
+     *  },
+     *  requirements = {"pagina"="\d+"}
      * )
      */
-    public function index(string $categoria, CategoriaRepository $categoriaRepository, MarcadorRepository $marcadorRepository): Response
+    public function index(string $categoria, int $pagina, CategoriaRepository $categoriaRepository, MarcadorRepository $marcadorRepository): Response
     {
-        if (! empty($categoria)) {
+        $categoria = (int) $categoria > 0 ? (int) $categoria : $categoria;
+        if(is_int($categoria)) {
+            $categoria = "todas";
+            $pagina = $categoria;
+        }
+        if ($categoria && "todas" != $categoria) {
             if (! $categoriaRepository->findByNombre($categoria)) {
                 throw $this->createNotFoundException("La categoría '$categoria' no existe!");
             }
-            $marcadores = $marcadorRepository->buscarCategoriaPorNombre($categoria);
+            $marcadores = $marcadorRepository->buscarCategoriaPorNombre($categoria , $pagina, self::ELEMENTOS_POR_PAGINA);
         } else {
-            $marcadores = $marcadorRepository->findAll();
+            $marcadores = $marcadorRepository->buscarTodos($pagina, self::ELEMENTOS_POR_PAGINA);
         }
         
         return $this->render('index/index.html.twig', [
             'marcadores' => $marcadores,
+            'pagina' => $pagina,
+            'parametros_ruta' => [
+                'categoria' => $categoria,
+            ],
+            'elementos_por_pagina' => self::ELEMENTOS_POR_PAGINA,
         ]);
     }
 }
