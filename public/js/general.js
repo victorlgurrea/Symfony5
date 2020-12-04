@@ -15,5 +15,32 @@ $(".favorito").on('click', function(e){
         }).fail(function(){
             $this.removeClass("disabled");
         });
+});
 
+$("body").on("submit", 'form[name="etiqueta"][data-ajax="true"]', function(e){
+    e.preventDefault();
+    
+    var $form = $(this),
+    $bttnSubmit = $form.find('button[type="submit"]'),
+    $container = $form.closest(".modal-body"),
+    $etiqueta = $("#marcador_etiquetas")
+    url = $form.attr('action');
+
+    $bttnSubmit.addClass("disabled");
+
+    var data = {};
+
+    $.each($form.serializeArray(), function(){
+        data[this.name] = this.value
+    });
+
+    $.post(url, data)
+        .done(function(response){
+                $container.html('');
+                $container.append(response.form.content)
+                $bttnSubmit.removeClass("disabled");
+        }).fail(function(){
+            $bttnSubmit.removeClass("disabled");
+
+        });
 });

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Marcador;
+use App\Entity\Etiqueta;
 use App\Form\MarcadorType;
+use App\Form\EtiquetaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +26,12 @@ class MarcadorController extends AbstractController
         $form = $this->createForm(MarcadorType::class, $marcador);
         $form->handleRequest($request);
 
+        
+        $etiquetum = new Etiqueta();
+        $formEtiqueta = $this->createForm(EtiquetaType::class, $etiquetum, [
+            'action' => $this->generateUrl('nueva_etiqueta_ajax')
+        ]);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($marcador);
@@ -37,6 +45,7 @@ class MarcadorController extends AbstractController
         return $this->render('marcador/new.html.twig', [
             'marcador' => $marcador,
             'form' => $form->createView(),
+            'form_etiqueta' => $formEtiqueta->createView(),
         ]);
     }
 
@@ -48,6 +57,11 @@ class MarcadorController extends AbstractController
         $form = $this->createForm(MarcadorType::class, $marcador);
         $form->handleRequest($request);
 
+        $etiquetum = new Etiqueta();
+        $formEtiqueta = $this->createForm(EtiquetaType::class, $etiquetum, [
+            'action' => $this->generateUrl('nueva_etiqueta_ajax')
+        ]);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
@@ -58,6 +72,7 @@ class MarcadorController extends AbstractController
         return $this->render('marcador/edit.html.twig', [
             'marcador' => $marcador,
             'form' => $form->createView(),
+            'form_etiqueta' => $formEtiqueta->createView(),
         ]);
     }
 

@@ -7,16 +7,22 @@
 {% endblock %}
 
 {% block contenedor_principal %}
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-6">
             <h1>Crear nueva subasta</h1>
         </div>
-        <div class="col-6 text-right">
+        <div class="col-4 mt-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevaEtiquetaModal">
+                Crear etiqueta modal
+            </button>
+        </div>
+        <div class="col-2 text-right">
             <a class="btn btn-outline-info mt-2" title="Volver" href="{{ path('app_index') }}"><i class="fas fa-undo"></i></a>
         </div>
     </div>
     
     {{ include('marcador/_form.html.twig') }}
+    {{ include('etiqueta/new.modal.html.twig') }}
 
 {% endblock %}
 

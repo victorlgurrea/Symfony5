@@ -31,7 +31,7 @@ class MarcadorType extends AbstractType
                 'allow_add' => [
                     'enabled' => true,
                     'new_tag_text' => '(nuevo)',
-                    'tag_separator' => '[","]',
+                    'tag_separators' => '[","]',
                 ]
             ])
         ;

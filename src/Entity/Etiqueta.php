@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EtiquetaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EtiquetaRepository::class)
@@ -19,6 +20,7 @@ class Etiqueta
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $nombre;
 

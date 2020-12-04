@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\BuscadorType;
 use App\Repository\CategoriaRepository;
 use App\Repository\MarcadorRepository;
+use App\Repository\EtiquetaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     public const ELEMENTOS_POR_PAGINA = 4;
+
+    /**
+     * @Route("/buscar-etiquetas", name="app_buscar_etiquetas")
+     */
+    public function buscarEtiquetas(EtiquetaRepository $etiquetaRepository, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+           $busqueda = $request->get('q');
+           $etiquetas = $etiquetaRepository->buscarPorNombre($busqueda);
+           
+           return $this->json($etiquetas);
+        }
+        
+        return $this->createNotFoundException();
+    }
+
  /**
     * @Route("/buscar/{busqueda}/{pagina}", 
     * name="app_busqueda",

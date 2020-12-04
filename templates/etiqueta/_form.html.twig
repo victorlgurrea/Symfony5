@@ -1,4 +1,26 @@
-{{ form_start(form) }}
+{% set ajax = ajax is defined and ajax %}
+
+{% if ajax %}
+    {{ include('comunes/_mensajes.html.twig') }}
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% endif %}
+
+{{ 
+    form_start(
+            form,
+            {
+                attr: {
+                        novalidate: 'novalidate',
+                        'data-ajax': ajax ? 'true' : 'false'
+                    }
+            }
+        ) 
+}}
+
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Guardar') }}</button>
+
+    <button class="btn">
+        {{ button_label|default('Guardar') }}
+    </button>
+
 {{ form_end(form) }}

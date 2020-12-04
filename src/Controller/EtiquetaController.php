@@ -92,18 +92,40 @@ class EtiquetaController extends AbstractController
         return $this->redirectToRoute('etiqueta_index');
     }
 
-    
-
     /**
-     * @Route("/", name="app_buscar_etiquetas")
-     */
-    public function buscarEtiquetas(EtiquetaRepository $etiquetaRepository, Request $request): Response
+    * @Route("/nueva-etiqueta-ajax", name="nueva_etiqueta_ajax")
+    */
+    public function nuevaEtiquetaAjax(Request $request): Response
     {
+        $creado = false;
         if ($request->isXmlHttpRequest()) {
-           $busqueda = $request->get('q');
+            $etiquetum = new Etiqueta();
+            $form = $this->createForm(EtiquetaType::class, $etiquetum, [
+                'action' => $this->generateUrl('nueva_etiqueta_ajax')
+            ]);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($etiquetum);
+                $entityManager->flush();
+                $this->addFlash('success', "Etiqueta creada correctamente!");
+                $creado = true;
+                if($creado) {
+                    $etiquetum = new Etiqueta();
+                    $form = $this->createForm(EtiquetaType::class, $etiquetum, [
+                        'action' => $this->generateUrl('nueva_etiqueta_ajax')
+                    ]);
+                }
+            }
 
-           $etiquetas = $etiquetaRepository->buscarPorNombre($busqueda);
-           return $this->json($etiquetas);
+            return $this->json([
+                "creado" => $creado,
+                "form" => $this->render('etiqueta/_form.html.twig', [
+                    'ajax' => true,
+                    'form' => $form->createView()
+                ])
+            ]);
         }
         
         return $this->createNotFoundException();

@@ -24,11 +24,10 @@ class EtiquetaRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->select('e.id, e.nombre as text')
             ->andWhere('e.nombre LIKE :nombre')
-            ->setParameter('val', $nombre)
+            ->setParameter('nombre', '%' . $nombre . '%')
             ->orderBy('e.nombre', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     // /**
