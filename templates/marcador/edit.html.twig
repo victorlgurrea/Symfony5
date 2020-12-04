@@ -2,6 +2,10 @@
 
 {% block title %}Editar subasta{% endblock %}
 
+{% block css_propio %}
+<link rel="stylesheet" href="/css/select2.min.css" />
+{% endblock %}
+
 {% block contenedor_principal %}
     <div class="row">
         <div class="col-6"><h1>Editar subasta</h1></div>
@@ -10,6 +14,9 @@
 
     {{ include('marcador/_form.html.twig', {'button_label': 'Guardar'}) }}
 
-    
+{% endblock %}
 
+{% block js_propio %}
+    <script src="/js/select2.min.js"></script>
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
 {% endblock %}

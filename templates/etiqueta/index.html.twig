@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etiquetas{% endblock %}
+
+{% block contenedor_principal %}
+    <h1>Listado etiquetas</h1>
+
+    <table class="table">
+        <thead>
+            <tr class="text-center" >
+                <th>Nombre</th>
+                <th>acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for etiquetum in etiquetas %}
+            <tr>
+                <td>{{ etiquetum.nombre }}</td>
+                <td class="text-right">
+                   <!-- <a href="{{ path('etiqueta_show', {'id': etiquetum.id}) }}">show</a>-->
+                    <a href="{{ path('etiqueta_edit', {'id': etiquetum.id}) }}"><i class="fas fa-pencil-alt" style="color:orange;"></i></a>
+                    <a class="btn" href="{{ path('app_eliminar_etiqueta', {'id': etiquetum.id })}}"><i class="fas fa-trash" style="color:red;"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No hay etiquetas</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="{{ path('etiqueta_new') }}" title="Crear nueva etiqueta"><i class="fas fa-plus-circle"></i></a>
+{% endblock %}
