@@ -128,7 +128,7 @@ class MarcadorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="marcador_delete", methods={"DELETE"})
+     * @Route("/{id}", name="marcador_delete", methods={"DELETE"},  priority=10)
      */
     public function delete(Request $request, Marcador $marcador): Response
     {

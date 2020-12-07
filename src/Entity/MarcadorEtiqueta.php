@@ -25,6 +25,7 @@ class MarcadorEtiqueta
 
     /**
      * @ORM\ManyToOne(targetEntity=Etiqueta::class,cascade={"persist"})
+     * @ORM\JoinColumn(name="marcador_id",referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $etiqueta;
 
