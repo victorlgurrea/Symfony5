@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Marcador;
 use App\Entity\Etiqueta;
+use App\Entity\MarcadorEtiqueta;
 use App\Form\MarcadorType;
+use App\Form\MarcadorEtiquetaType;
 use App\Form\EtiquetaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +37,13 @@ class MarcadorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($marcador);
+            $etiquetas = $form->get('etiquetas')->getData();
+            foreach ($etiquetas as $etiqueta) {
+                $marcadorEtiqueta = new MarcadorEtiqueta();
+                $marcadorEtiqueta->setMarcador($marcador);
+                $marcadorEtiqueta->setEtiqueta($etiqueta);
+                $entityManager->persist($marcadorEtiqueta);
+            }
             $entityManager->flush();
 
             $this->addFlash('success', 'Subasta creada correctamente!');
@@ -62,11 +71,53 @@ class MarcadorController extends AbstractController
             'action' => $this->generateUrl('nueva_etiqueta_ajax')
         ]);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $marcadorEtiquetasActuales = $marcador->getMarcadorEtiquetas();
+        
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $etiquetas = $form->get('etiquetas')->getData();
 
-            $this->addFlash('success', 'Subasta editada correctamente!');
-            return $this->redirectToRoute('app_index');
+                foreach ($marcadorEtiquetasActuales as $marcadorEtiquetaActual) {
+                    $eliminar = true;
+                    $etiquetaActual = $marcadorEtiquetaActual->getEtiqueta();
+                    foreach($etiquetas as $etiqueta) {
+                        if($etiquetaActual->getId() == $etiqueta->getId()){
+                            $eliminar = false;
+                        }
+                    }
+                    if($eliminar) {
+                        $entityManager->remove($marcadorEtiquetaActual);
+                    }
+                }
+
+                foreach($etiquetas as $etiqueta) {
+                    $crear = true;
+                    foreach ($marcadorEtiquetasActuales as $marcadorEtiquetaActual) {
+                        $etiquetaActual = $marcadorEtiquetaActual->getEtiqueta();
+                        if($etiquetaActual->getId() == $etiqueta->getId()){
+                            $crear = false;
+                        }
+                    }
+
+                    if($crear){
+                        $marcadorEtiqueta = new MarcadorEtiqueta();
+                        $marcadorEtiqueta->setMarcador($marcador);
+                        $marcadorEtiqueta->setEtiqueta($etiqueta);
+                        $entityManager->persist($marcadorEtiqueta);
+                    }
+                }
+
+                $entityManager->flush();
+                $this->addFlash('success', 'Subasta editada correctamente!');
+                return $this->redirectToRoute('app_index');
+            }
+        } else {
+                $etiquetas = [];
+                foreach ( $marcadorEtiquetasActuales as $marcadorEtiqueta) {
+                    $etiquetas[] = $marcadorEtiqueta->getEtiqueta();
+                }
+                $form->get('etiquetas')->setData($etiquetas);
         }
 
         return $this->render('marcador/edit.html.twig', [

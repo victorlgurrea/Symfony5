@@ -55,13 +55,14 @@ class Marcador
     private $favorito;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Etiqueta::class ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=MarcadorEtiqueta::class, mappedBy="Marcador")
      */
-    private $etiqueta;
+    private $marcadorEtiquetas;
 
     public function __construct()
     {
         $this->etiqueta = new ArrayCollection();
+        $this->marcadorEtiquetas = new ArrayCollection();
     }
 
     /**
@@ -138,25 +139,31 @@ class Marcador
     }
 
     /**
-     * @return Collection|Etiqueta[]
+     * @return Collection|MarcadorEtiqueta[]
      */
-    public function getEtiqueta(): Collection
+    public function getMarcadorEtiquetas(): Collection
     {
-        return $this->etiqueta;
+        return $this->marcadorEtiquetas;
     }
 
-    public function addEtiquetum(Etiqueta $etiquetum): self
+    public function addMarcadorEtiqueta(MarcadorEtiqueta $marcadorEtiqueta): self
     {
-        if (!$this->etiqueta->contains($etiquetum)) {
-            $this->etiqueta[] = $etiquetum;
+        if (!$this->marcadorEtiquetas->contains($marcadorEtiqueta)) {
+            $this->marcadorEtiquetas[] = $marcadorEtiqueta;
+            $marcadorEtiqueta->setMarcador($this);
         }
 
         return $this;
     }
 
-    public function removeEtiquetum(Etiqueta $etiquetum): self
+    public function removeMarcadorEtiqueta(MarcadorEtiqueta $marcadorEtiqueta): self
     {
-        $this->etiqueta->removeElement($etiquetum);
+        if ($this->marcadorEtiquetas->removeElement($marcadorEtiqueta)) {
+            // set the owning side to null (unless already changed)
+            if ($marcadorEtiqueta->getMarcador() === $this) {
+                $marcadorEtiqueta->setMarcador(null);
+            }
+        }
 
         return $this;
     }
