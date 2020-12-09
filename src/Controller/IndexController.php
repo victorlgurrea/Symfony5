@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Form\BuscadorType;
 use App\Repository\CategoriaRepository;
 use App\Repository\MarcadorRepository;
 use App\Repository\EtiquetaRepository;
+use App\Form\BuscadorType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class IndexController extends AbstractController
 {
     public const ELEMENTOS_POR_PAGINA = 4;
 
-    /**
+     /**
      * @Route("/buscar-etiquetas", name="app_buscar_etiquetas")
      */
     public function buscarEtiquetas(EtiquetaRepository $etiquetaRepository, Request $request)
@@ -31,7 +31,7 @@ class IndexController extends AbstractController
         return $this->createNotFoundException();
     }
 
- /**
+    /**
     * @Route("/buscar/{busqueda}/{pagina}", 
     * name="app_busqueda",
     * defaults = {
@@ -74,7 +74,7 @@ class IndexController extends AbstractController
             ]);
         }
 
-        return $this->render("comunes/_buscador.html.twig", [
+        return $this->render("busqueda/_buscador.html.twig", [
             'formulario_busqueda' => $formularioBusqueda->createView()
         ]);
     }
