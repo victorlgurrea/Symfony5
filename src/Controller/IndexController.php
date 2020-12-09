@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IndexController extends AbstractController
 {
@@ -136,7 +137,13 @@ class IndexController extends AbstractController
      *  requirements = {"pagina"="\d+"}
      * )
      */
-    public function index(string $categoria, int $pagina, CategoriaRepository $categoriaRepository, MarcadorRepository $marcadorRepository): Response
+    public function index(
+        string $categoria, 
+        int $pagina, 
+        CategoriaRepository $categoriaRepository, 
+        MarcadorRepository $marcadorRepository,
+        TranslatorInterface $translator
+        ): Response
     {
         $categoria = (int) $categoria > 0 ? (int) $categoria : $categoria;
         if(is_int($categoria)) {
@@ -145,7 +152,12 @@ class IndexController extends AbstractController
         }
         if ($categoria && "todas" != $categoria) {
             if (! $categoriaRepository->findByNombre($categoria)) {
-                throw $this->createNotFoundException("La categoría '$categoria' no existe!");
+                throw $this->createNotFoundException($translator->trans("La categoría \"{categoria}\" no existe!",
+                [
+                    '{categoria}' => $categoria
+                ],
+                    'messages'
+            ));
             }
             $marcadores = $marcadorRepository->buscarCategoriaPorNombre($categoria , $pagina, self::ELEMENTOS_POR_PAGINA);
         } else {

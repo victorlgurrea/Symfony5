@@ -17,6 +17,12 @@
             Favoritos
         </a>
       </li>
+       <li class="nav-item">
+        <a class="nav-link {{ 'app_index' == app_ruta ? 'active' }}" 
+            href="{{ path('app_index') }}">
+            {{ "Todas"|trans }}
+        </a>
+      </li>
       {% for categoria in categoria_repository.findAll %}
           <li class="nav-item">
             <a class="nav-link {{ 'app_index' == app_ruta and categoria.nombre == nombre_categoria ? 'active'  }}"
@@ -34,9 +40,21 @@
         Categorías
       </a>
       <a class="btn btn-outline-success mr-2 w-100" title="Añadir nueva subasta" href="{{ path('marcador_new') }}">
-        <span class="oi oi-plus" title="añadir" aria-hidden="true"></span>
+        <span class="oi oi-plus" aria-hidden="true"></span>
       </a>
     </div>
+
+      {{
+        render
+        (
+          controller(
+            'App\\Controller\\IdiomaController::index',
+              {
+                ruta: app_ruta 
+              }
+            )
+        )
+      }}
 
   {% if formulario_busqueda is defined %}
      {{

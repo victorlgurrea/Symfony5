@@ -6,3 +6,4 @@ twig:
     globals:
         formato_fecha : '%app.formato_fecha%'
         categoria_repository: '@App\Repository\CategoriaRepository'
+        listado_idiomas: '%app.listado_idiomas%'
