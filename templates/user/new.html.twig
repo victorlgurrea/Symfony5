@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevo usuario{% endblock %}
+
+{% block contenedor_principal %}
+    {% include 'comunes/_mensajes.html.twig' %}
+    <h1>Crear nuevo usuario</h1>
+
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('user_index') }}">volver</a>
+{% endblock %}

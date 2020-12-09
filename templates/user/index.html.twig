@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block contenedor_principal %}
+ {% include 'comunes/_mensajes.html.twig' %}
+
+    <h1>Usuarios</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>
+                    <a class="btn" href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-pencil-alt" style="color:orange;"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No hay registros</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="{{ path('user_new') }}" title="Añadir Usuario"><i class="fas fa-plus-circle"></i></a>
+{% endblock %}
