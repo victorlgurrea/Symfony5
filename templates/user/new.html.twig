@@ -4,9 +4,10 @@
 
 {% block contenedor_principal %}
     {% include 'comunes/_mensajes.html.twig' %}
-    <h1>Crear nuevo usuario</h1>
+        <div class="row">
+        <div class="col-6"><h1>Nuevo Usuario</h1></div>
+        <div class="col-6 text-right"><a class="btn btn-outline-info" href="{{ path('user_index') }}" title="Gestión de usuarios"><i class="fas fa-undo"></i></a></div>
+    </div>
 
     {{ include('user/_form.html.twig') }}
-
-    <a href="{{ path('user_index') }}">volver</a>
 {% endblock %}

@@ -59,6 +59,12 @@ class Marcador
      */
     private $marcadorEtiquetas;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
+
     public function __construct()
     {
         $this->etiqueta = new ArrayCollection();
@@ -164,6 +170,18 @@ class Marcador
                 $marcadorEtiqueta->setMarcador(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUsuario(): ?user
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?user $usuario): self
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }

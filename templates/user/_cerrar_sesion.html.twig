@@ -1,10 +1,10 @@
 {% if app.user %}
 <div class="dropdown ml-2">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="cerrarSesion" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="oi oi-person mr-2"></span>{{ app.user.username }}
+    <span class="oi oi-person mr-2" title="{{ app.user.username }}"></span>
   </button>
   <div class="dropdown-menu" aria-labelledby="cerrarSesion">
-    <a class="dropdown-item" href="{{ path('app_logout') }}"><span class="oi oi-account-logout mr-2"></span>{{ 'Logout'|trans }}</a>
+    <a class="dropdown-item" href="{{ path('app_logout') }}" ><span class="oi oi-account-logout mr-2"></span>{{ 'Logout'|trans }}</a>
   </div>
 </div>
 {% endif %}

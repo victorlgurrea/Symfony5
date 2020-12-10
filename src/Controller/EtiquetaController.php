@@ -21,7 +21,7 @@ class EtiquetaController extends AbstractController
     public function index(EtiquetaRepository $etiquetaRepository): Response
     {
         return $this->render('etiqueta/index.html.twig', [
-            'etiquetas' => $etiquetaRepository->findAll(),
+            'etiquetas' => $etiquetaRepository->findBy(['usuario' => $this->getUser()]),
         ]);
     }
 
@@ -35,6 +35,8 @@ class EtiquetaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $usuario = $this->getUser();
+            $etiquetum->setUsuario($usuario);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($etiquetum);
             $entityManager->flush();
@@ -107,6 +109,7 @@ class EtiquetaController extends AbstractController
     
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
+                $etiquetum->setUsuario($this->getUSer());
                 $entityManager->persist($etiquetum);
                 $entityManager->flush();
                 $this->addFlash('success', "Etiqueta creada correctamente!");

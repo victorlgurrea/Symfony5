@@ -15,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IndexController extends AbstractController
 {
-    public const ELEMENTOS_POR_PAGINA = 4;
+    public const ELEMENTOS_POR_PAGINA = 5;
     /** Panel
      * @Route(
      * "/{categoria}/{pagina}", 
@@ -48,7 +48,10 @@ class IndexController extends AbstractController
             $pagina = $categoria;
         }
         if ($categoria && "todas" != $categoria) {
-            if (! $categoriaRepository->findByNombre($categoria)) {
+            if (! $categoriaRepository->findBy([
+                'nombre' => $categoria,
+                'usuario' => $security->getUser()
+                ])) {
                 throw $this->createNotFoundException($translator->trans("La categoría \"{categoria}\" no existe!",
                 [
                     '{categoria}' => $categoria

@@ -21,7 +21,10 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>
-                    <a class="btn" href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-pencil-alt" style="color:orange;"></i></a>
+                    <div class="d-flex">
+                        <a class="btn" href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-pencil-alt" style="color:orange;"></i></a>
+                        {{ include('user/_delete_form.html.twig') }}
+                    </div>
                 </td>
             </tr>
         {% else %}

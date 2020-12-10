@@ -12,7 +12,7 @@ use App\Form\BuscadorType;
 
 class BusquedaController extends AbstractController
 {
-    public const ELEMENTOS_POR_PAGINA = 4;
+    public const ELEMENTOS_POR_PAGINA = 5;
     
     /**
      * @Route("/buscar-etiquetas", name="app_buscar_etiquetas")

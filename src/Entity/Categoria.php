@@ -27,6 +27,12 @@ class Categoria
      */
     private $color;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,5 +65,17 @@ class Categoria
     public function __toString()
     {
         return $this->nombre;
+    }
+
+    public function getUsuario(): ?user
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?user $usuario): self
+    {
+        $this->usuario = $usuario;
+
+        return $this;
     }
 }

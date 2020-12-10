@@ -7,51 +7,52 @@
     <h6 class="border-bottom border-gray pb-2 mb-0">
       Subastas
     </h6>
-  
-  {% for marcador in marcadores %}
-    <div class="media text-muted pt-3">
-      <svg width="32" height="32" class="mr-2 rounded">
-        <rect width="32" height="32" style="fill:{{ marcador.categoria.color }};" />
-      </svg>
-      <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">  
-        <div class="d-flex justify-content-between align-items-center w-100">
-          <div> 
-            <a href="#" target="_blank">
-              <strong class="text-gray-dark">{{ marcador.nombre }}</strong>
-            </a>
-            <span class="d-block">{{ marcador.categoria.nombre }}</span>
-            <span class="d-block">
-              <small>{{ marcador.creado|tiempo({formato: formato_fecha}) }}</small>
-            </span>
-            {% if marcador.marcadorEtiquetas is not empty %}
-          
+    {% if marcadores is not empty %}
+    {% for marcador in marcadores %}
+      <div class="media text-muted pt-3">
+        <svg width="32" height="32" class="mr-2 rounded">
+          <rect width="32" height="32" style="fill:{{ marcador.categoria.color }};" />
+        </svg>
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">  
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <div> 
+              <a href="#" target="_blank">
+                <strong class="text-gray-dark">{{ marcador.nombre }}</strong>
+              </a>
+              <span class="d-block">{{ marcador.categoria.nombre }}</span>
               <span class="d-block">
-                <small>
-                  {% for marcadorEtiqueta in marcador.marcadorEtiquetas %}
-                    {{ marcadorEtiqueta.etiqueta.nombre ~'('~ marcadorEtiqueta.creado|tiempo({formato: formato_fecha}) ~')'~ ( not loop.last ? ',') }}
-                  {% endfor %}
-                </small>
+                <small>{{ marcador.creado|tiempo({formato: formato_fecha}) }}</small>
               </span>
-            {% endif %}
-          </div>
-          <div class="d-flex">
-           <a href="" 
-                data-id="{{ marcador.id}}"
-                data-url="{{ path('app_editar_favorito')}}"
-                class="btn mg-3 mr-3 favorito {{ marcador.favorito ? 'activo' }}">
-                <span class="oi oi-star" title="favorito" aria-hidden="true" style="cursor:pointer;"></span>
-            </a>             
-            <a href="{{ path('marcador_edit', {'id': marcador.id}) }}" class="btn mg-3 mr-3" title="editar subasta">
-                <i class="fas fa-pencil-alt" style="color:orange"></i>
-            </a>
+              {% if marcador.marcadorEtiquetas is not empty %}
+            
+                <span class="d-block">
+                  <small>
+                    {% for marcadorEtiqueta in marcador.marcadorEtiquetas %}
+                      {{ marcadorEtiqueta.etiqueta.nombre ~'('~ marcadorEtiqueta.creado|tiempo({formato: formato_fecha}) ~')'~ ( not loop.last ? ',') }}
+                    {% endfor %}
+                  </small>
+                </span>
+              {% endif %}
+            </div>
+            <div class="d-flex">
+            <a href="" 
+                  data-id="{{ marcador.id}}"
+                  data-url="{{ path('app_editar_favorito')}}"
+                  class="btn mg-3 mr-3 favorito {{ marcador.favorito ? 'activo' }}">
+                  <span class="oi oi-star" title="favorito" aria-hidden="true" style="cursor:pointer;"></span>
+              </a>      
+              {% if is_granted('ROLE_ADMIN') %}       
+                <a href="{{ path('marcador_edit', {'id': marcador.id}) }}" class="btn mg-3 mr-3" title="editar subasta">
+                    <i class="fas fa-pencil-alt" style="color:orange"></i>
+                </a>
 
-            {{ include('marcador/_delete_form.html.twig') }}
-
+                {{ include('marcador/_delete_form.html.twig') }}
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
+    {% endfor %}  
     <div class="mt-3">
     {{
       include("comunes/_paginacion.html.twig", {
@@ -64,7 +65,7 @@
     </div>
     {% else %}
       <p>No se han encontrado registros</p>
-    {% endfor %}  
+    {% endif %}
 
   </div>
 {% endblock %}

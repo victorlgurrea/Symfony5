@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FavoritoController extends AbstractController
 {
-    public const ELEMENTOS_POR_PAGINA = 4;
+    public const ELEMENTOS_POR_PAGINA = 5;
      /**
      * @Route(
      * "/favoritos/{pagina}", 

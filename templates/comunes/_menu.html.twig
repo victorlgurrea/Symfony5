@@ -24,7 +24,7 @@
               {{ "Todas"|trans }}
           </a>
         </li>
-        {% for categoria in categoria_repository.findAll %}
+        {% for categoria in categoria_repository.obtenerTodosPorUsuarioActual %}
             <li class="nav-item">
               <a class="nav-link {{ 'app_index' == app_ruta and categoria.nombre == nombre_categoria ? 'active'  }}"
                 href="{{ path('app_index', {categoria: categoria.nombre}) }}">
@@ -35,22 +35,23 @@
       </ul>
       <div class="d-md-flex my-2 my-lg-0">
         {% if is_granted('ROLE_ADMIN') %}
-          <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de usuarios" href="{{ path('user_index')}}">
+          <a class="btn btn-outline-success ml-2 w-100 mb-3 mb-sm-0" title="Gestión de usuarios" href="{{ path('user_index')}}">
             Usuarios
-          </a>        
-          <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de etiquetas" href="{{ path('etiqueta_index')}}">
+          </a> 
+          {% endif %}       
+          <a class="btn btn-outline-success ml-2 w-100 mb-3 mb-sm-0" title="Gestión de etiquetas" href="{{ path('etiqueta_index')}}">
             Etiquetas
           </a>
-          <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de categorias" href="{{ path('app_listado_categoria')}}">
+          <a class="btn btn-outline-success ml-2 w-100 mb-3 mb-sm-0" title="Gestión de categorias" href="{{ path('app_listado_categoria')}}">
             Categorías
           </a>
-          <a class="btn btn-outline-success mr-2 w-100" title="Añadir nueva subasta" href="{{ path('marcador_new') }}">
+          <a class="btn btn-outline-success ml-2 w-100" title="Añadir nueva subasta" href="{{ path('marcador_new') }}">
             <span class="oi oi-plus" aria-hidden="true"></span>
           </a>
-        {% endif %}
+        
       </div>
       {% endif %}
-        <div class="{{ (app.user is empty ) ? 'col-12 text-right' }}">
+        <div class="ml-2 {{ (app.user is empty ) ? 'col-12 text-right' }}">
           {{
             render
             (

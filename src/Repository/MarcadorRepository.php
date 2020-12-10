@@ -6,6 +6,7 @@ use App\Entity\Marcador;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Marcador|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,9 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MarcadorRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Security $security, ManagerRegistry $registry)
     {
         parent::__construct($registry, Marcador::class);
+        $this->usuario = $security->getUser();
     }
 
     public function buscarCategoriaPorNombre(string $nombreCategoria, $pagina = 1, $elementos_por_pagina = 5)
@@ -25,7 +27,9 @@ class MarcadorRepository extends ServiceEntityRepository
         $query =  $this->createQueryBuilder('m')
                     ->innerJoin('m.categoria', 'c')
                     ->where('c.nombre =:nombreCategoria')
+                    ->andWhere('m.usuario =:usuario')
                     ->setParameter('nombreCategoria', $nombreCategoria)
+                    ->setParameter('usuario', $this->usuario)
                     ->orderBy('m.creado', 'DESC')
                     ->getQuery();
         
@@ -36,6 +40,8 @@ class MarcadorRepository extends ServiceEntityRepository
     {
         $query =   $this->createQueryBuilder('m')
                     ->where('m.nombre LIKE :nombre')
+                    ->andWhere('m.usuario =:usuario')
+                    ->setParameter('usuario', $this->usuario)
                     ->setParameter('nombre', '%' . $nombre . '%')
                     ->orderBy('m.creado', 'DESC')
                     ->getQuery();
@@ -47,6 +53,8 @@ class MarcadorRepository extends ServiceEntityRepository
     {
         $query =   $this->createQueryBuilder('m')
                     ->where('m.favorito = true')
+                    ->andWhere('m.usuario = :usuario')
+                    ->setParameter('usuario', $this->usuario)
                     ->orderBy('m.creado', 'DESC')
                     ->getQuery();
                 
@@ -56,6 +64,8 @@ class MarcadorRepository extends ServiceEntityRepository
     public function buscarTodos($pagina = 1, $elementos_por_pagina = 5)
     {  
         $query =   $this->createQueryBuilder('m')
+                    ->where('m.usuario =:usuario')
+                    ->setParameter('usuario', $this->usuario)
                     ->orderBy('m.creado', 'DESC')
                     ->addOrderBy('m.nombre', 'ASC')
                     ->getQuery();

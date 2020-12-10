@@ -35,11 +35,14 @@ class MarcadorController extends AbstractController
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $usuario = $this->getUser();
+            $marcador->setUsuario($usuario);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($marcador);
             $etiquetas = $form->get('etiquetas')->getData();
             foreach ($etiquetas as $etiqueta) {
                 $marcadorEtiqueta = new MarcadorEtiqueta();
+                $etiqueta->setUsuario($usuario);
                 $marcadorEtiqueta->setMarcador($marcador);
                 $marcadorEtiqueta->setEtiqueta($etiqueta);
                 $entityManager->persist($marcadorEtiqueta);
@@ -75,6 +78,7 @@ class MarcadorController extends AbstractController
         
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $usuario = $this->getUser();
                 $entityManager = $this->getDoctrine()->getManager();
                 $etiquetas = $form->get('etiquetas')->getData();
 
@@ -101,6 +105,7 @@ class MarcadorController extends AbstractController
                     }
 
                     if($crear){
+                        $etiqueta->setUsuario($usuario);
                         $marcadorEtiqueta = new MarcadorEtiqueta();
                         $marcadorEtiqueta->setMarcador($marcador);
                         $marcadorEtiqueta->setEtiqueta($etiqueta);

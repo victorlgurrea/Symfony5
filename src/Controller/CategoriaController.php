@@ -20,7 +20,9 @@ class CategoriaController extends AbstractController
      */
     public function index(CategoriaRepository $categoriaRepository)
     {
-        $categorias = $categoriaRepository->findAll();
+        $categorias = $categoriaRepository->findBy([
+            'usuario' => $this->getUser()
+        ]);
 
         return $this->render('categoria/index.html.twig', [
             'categorias' => $categorias,
@@ -34,10 +36,13 @@ class CategoriaController extends AbstractController
     {
         $categoria = new Categoria();
         if($this->isCsrfTokenValid('categoria', $request->request->get('_token'))) {
+            $usuario = $this->getUser();
+           
             $nombre = $request->request->get('nombre', null);
             $color = $request->request->get('color', null);
             $categoria->setNombre($nombre);
             $categoria->setColor($color);
+            $categoria->setUsuario($usuario);
             if(! $nombre || ! $color) {
                 if(! $nombre ) {
                     $this->addFlash('danger', "El nombre es obligatorio");

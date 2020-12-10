@@ -24,6 +24,12 @@ class Etiqueta
      */
     private $nombre;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -37,6 +43,18 @@ class Etiqueta
     public function setNombre(string $nombre): self
     {
         $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getUsuario(): ?user
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?user $usuario): self
+    {
+        $this->usuario = $usuario;
 
         return $this;
     }
