@@ -10,71 +10,80 @@
   </button>
 
   <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link {{ 'app_favoritos' == app_ruta ? 'active' }}" 
-            href="{{ path('app_favoritos') }}">
-            Favoritos
-        </a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link {{ 'app_index' == app_ruta and (nombre_categoria is empty or 'todas' == nombre_categoria)? 'active' }}" 
-            href="{{ path('app_index') }}">
-            {{ "Todas"|trans }}
-        </a>
-      </li>
-      {% for categoria in categoria_repository.findAll %}
-          <li class="nav-item">
-            <a class="nav-link {{ 'app_index' == app_ruta and categoria.nombre == nombre_categoria ? 'active'  }}"
-               href="{{ path('app_index', {categoria: categoria.nombre}) }}">
-                {{ categoria.nombre }}
-            </a>
-          </li>
-      {% endfor %}
-    </ul>
-    <div class="d-md-flex my-2 my-lg-0">
-      <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de etiquetas" href="{{ path('etiqueta_index')}}">
-        Etiquetas
-      </a>
-      <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de categorias" href="{{ path('app_listado_categoria')}}">
-        Categorías
-      </a>
-      <a class="btn btn-outline-success mr-2 w-100" title="Añadir nueva subasta" href="{{ path('marcador_new') }}">
-        <span class="oi oi-plus" aria-hidden="true"></span>
-      </a>
-    </div>
-
-      {{
-        render
-        (
-          controller(
-            'App\\Controller\\IdiomaController::index',
-              {
-                ruta: app_ruta 
-              }
+    {% if app.user %}
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link {{ 'app_favoritos' == app_ruta ? 'active' }}" 
+              href="{{ path('app_favoritos') }}">
+              Favoritos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ 'app_index' == app_ruta and (nombre_categoria is empty or 'todas' == nombre_categoria)? 'active' }}" 
+              href="{{ path('app_index') }}">
+              {{ "Todas"|trans }}
+          </a>
+        </li>
+        {% for categoria in categoria_repository.findAll %}
+            <li class="nav-item">
+              <a class="nav-link {{ 'app_index' == app_ruta and categoria.nombre == nombre_categoria ? 'active'  }}"
+                href="{{ path('app_index', {categoria: categoria.nombre}) }}">
+                  {{ categoria.nombre }}
+              </a>
+            </li>
+        {% endfor %}
+      </ul>
+      <div class="d-md-flex my-2 my-lg-0">
+        {% if is_granted('ROLE_ADMIN') %}
+          <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de usuarios" href="{{ path('user_index')}}">
+            Usuarios
+          </a>        
+          <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de etiquetas" href="{{ path('etiqueta_index')}}">
+            Etiquetas
+          </a>
+          <a class="btn btn-outline-success mr-2 w-100 mb-3 mb-sm-0" title="Gestión de categorias" href="{{ path('app_listado_categoria')}}">
+            Categorías
+          </a>
+          <a class="btn btn-outline-success mr-2 w-100" title="Añadir nueva subasta" href="{{ path('marcador_new') }}">
+            <span class="oi oi-plus" aria-hidden="true"></span>
+          </a>
+        {% endif %}
+      </div>
+      {% endif %}
+        <div class="{{ (app.user is empty ) ? 'col-12 text-right' }}">
+          {{
+            render
+            (
+              controller(
+                'App\\Controller\\IdiomaController::index',
+                  {
+                    ruta: app_ruta 
+                  }
+                )
             )
-        )
-      }}
-
-  {% if formulario_busqueda is defined %}
-     {{
-       include('busqueda/_buscador.html.twig', {formulario_busqueda:formulario_busqueda})
-     }}
-    {% else %}
+          }}
+          </div>
+  {% if app.user %}
+    {% if formulario_busqueda is defined %}
       {{
-        render
-        (
-          controller(
-            'App\\Controller\\BusquedaController::busqueda',
-              {
-                busqueda: busqueda is defined ? busqueda,
-                pagina: pagina is defined ? pagina : 1
-              }
-            )
-        )
+        include('busqueda/_buscador.html.twig', {formulario_busqueda:formulario_busqueda})
       }}
+      {% else %}
+        {{
+          render
+          (
+            controller(
+              'App\\Controller\\BusquedaController::busqueda',
+                {
+                  busqueda: busqueda is defined ? busqueda,
+                  pagina: pagina is defined ? pagina : 1
+                }
+              )
+          )
+        }}
+      {% endif %}
+
+      {{ include('user/_cerrar_sesion.html.twig') }}
     {% endif %}
-
-    {{ include('user/_cerrar_sesion.html.twig') }}
   </div>
 </nav>

@@ -11,7 +11,28 @@ use Symfony\Component\HttpFoundation\Request;
 class FavoritoController extends AbstractController
 {
     public const ELEMENTOS_POR_PAGINA = 4;
-    
+     /**
+     * @Route(
+     * "/favoritos/{pagina}", 
+     * name="app_favoritos",
+     * priority = 2,
+     * defaults = {
+     *      "pagina": 1,
+     *  },
+     *  requirements = {"pagina"="\d+"}
+     * )
+     */
+    public function favoritos(int $pagina, MarcadorRepository $marcadorRepository)
+    {
+        $marcadores = $marcadorRepository->buscarPorFavoritos($pagina, self::ELEMENTOS_POR_PAGINA);
+
+        return $this->render('index/index.html.twig', [
+            'marcadores' => $marcadores,
+            'pagina' => $pagina,
+            'elementos_por_pagina' => self::ELEMENTOS_POR_PAGINA
+        ]);
+    }
+
   /**
     * @Route("/editar-favorito", name="app_editar_favorito")
     */
@@ -36,27 +57,6 @@ class FavoritoController extends AbstractController
             ]);
         }
         throw $this->createNotFoundException();
-    }
-
-    /**
-     * @Route(
-     * "/favoritos/{pagina}", 
-     * name="app_favoritos",
-     * defaults = {
-     *      "pagina": 1,
-     *  },
-     *  requirements = {"pagina"="\d+"}
-     * )
-     */
-    public function favoritos(int $pagina, MarcadorRepository $marcadorRepository)
-    {
-        $marcadores = $marcadorRepository->buscarPorFavoritos($pagina, self::ELEMENTOS_POR_PAGINA);
-
-        return $this->render('index/index.html.twig', [
-            'marcadores' => $marcadores,
-            'pagina' => $pagina,
-            'elementos_por_pagina' => self::ELEMENTOS_POR_PAGINA
-        ]);
     }
 
 }
