@@ -8,6 +8,7 @@ use App\Entity\MarcadorEtiqueta;
 use App\Form\MarcadorType;
 use App\Form\MarcadorEtiquetaType;
 use App\Form\EtiquetaType;
+use App\Security\Voter\MarcadorVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +67,9 @@ class MarcadorController extends AbstractController
      */
     public function edit(Request $request, Marcador $marcador): Response
     {
+        //Control voter 
+        $this->denyAccessUnlessGranted(MarcadorVoter::EDITAR, $marcador);
+
         $form = $this->createForm(MarcadorType::class, $marcador);
         $form->handleRequest($request);
 
@@ -137,6 +141,9 @@ class MarcadorController extends AbstractController
      */
     public function delete(Request $request, Marcador $marcador): Response
     {
+        //Control voter 
+        $this->denyAccessUnlessGranted(MarcadorVoter::ELIMINAR, $marcador);
+
         if ($this->isCsrfTokenValid('delete'.$marcador->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($marcador);

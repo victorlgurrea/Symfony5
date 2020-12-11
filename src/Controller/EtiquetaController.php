@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Etiqueta;
 use App\Form\EtiquetaType;
 use App\Repository\EtiquetaRepository;
+use App\Security\Voter\CRUDVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,10 +66,15 @@ class EtiquetaController extends AbstractController
      */
     public function edit(Request $request, Etiqueta $etiquetum): Response
     {
+        //Control voter 
+        $this->denyAccessUnlessGranted(CRUDVoter::EDITAR, $etiquetum);
+
         $form = $this->createForm(EtiquetaType::class, $etiquetum);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+           
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('etiqueta_index');
@@ -85,6 +91,9 @@ class EtiquetaController extends AbstractController
      */
     public function delete(Request $request, Etiqueta $etiquetum): Response
     {
+        //Control voter 
+        $this->denyAccessUnlessGranted(CRUDVoter::ELIMINAR, $etiquetum);
+
         if ($this->isCsrfTokenValid('delete'.$etiquetum->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($etiquetum);
@@ -139,6 +148,9 @@ class EtiquetaController extends AbstractController
     */
     public function eliminar(Etiqueta $etiqueta, Request $request)
     {
+        //Control voter 
+        $this->denyAccessUnlessGranted(CRUDVoter::ELIMINAR, $etiqueta);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($etiqueta);
         $entityManager->flush();

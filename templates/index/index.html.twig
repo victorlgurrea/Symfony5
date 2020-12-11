@@ -41,13 +41,12 @@
                   class="btn mg-3 mr-3 favorito {{ marcador.favorito ? 'activo' }}">
                   <span class="oi oi-star" title="favorito" aria-hidden="true" style="cursor:pointer;"></span>
               </a>      
-              {% if is_granted('ROLE_ADMIN') %}       
                 <a href="{{ path('marcador_edit', {'id': marcador.id}) }}" class="btn mg-3 mr-3" title="editar subasta">
                     <i class="fas fa-pencil-alt" style="color:orange"></i>
                 </a>
 
                 {{ include('marcador/_delete_form.html.twig') }}
-              {% endif %}
+            
             </div>
           </div>
         </div>

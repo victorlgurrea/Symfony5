@@ -39,7 +39,7 @@ class Marcador
 
     /**
      * @ORM\ManyToOne(targetEntity=Categoria::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Assert\NotBlank
      */
     private $categoria;
@@ -55,7 +55,8 @@ class Marcador
     private $favorito;
 
     /**
-     * @ORM\OneToMany(targetEntity=MarcadorEtiqueta::class, mappedBy="Marcador")
+     * @ORM\OneToMany(targetEntity=MarcadorEtiqueta::class, mappedBy="Marcador",cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $marcadorEtiquetas;
 

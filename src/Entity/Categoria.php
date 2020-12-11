@@ -28,8 +28,8 @@ class Categoria
     private $color;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=User::class,cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
      */
     private $usuario;
 

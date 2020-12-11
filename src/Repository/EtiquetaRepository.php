@@ -27,40 +27,11 @@ class EtiquetaRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('e')
             ->select('e.id, e.nombre as text')
             ->andWhere('e.nombre LIKE :nombre')
-            ->andWhere('e.usuario_id = :usuario')
+            ->andWhere('e.usuario = :usuario')
             ->setParameter('nombre', '%' . $nombre . '%')
             ->setParameter('usuario', $this->user)
             ->orderBy('e.nombre', 'ASC')
             ->getQuery()
             ->getResult();
     }
-
-    // /**
-    //  * @return Etiqueta[] Returns an array of Etiqueta objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Etiqueta
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

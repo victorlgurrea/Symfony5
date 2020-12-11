@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CategoriaRepository;
 use App\Entity\Categoria;
+use App\Security\Voter\CRUDVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,6 +69,10 @@ class CategoriaController extends AbstractController
      */
     public function editar(Categoria $categoria, EntityManagerInterface $entityManager, Request $request)
     {
+
+        //Control voter 
+        $this->denyAccessUnlessGranted(CRUDVoter::EDITAR, $categoria);
+
         if($this->isCsrfTokenValid('categoria', $request->request->get('_token'))) {
             $nombre = $request->request->get('nombre', null);
             $color = $request->request->get('color', null);
@@ -99,6 +104,9 @@ class CategoriaController extends AbstractController
     */
     public function eliminar(Categoria $categoria, Request $request)
     {
+        //Control voter 
+        $this->denyAccessUnlessGranted(CRUDVoter::ELIMINAR, $categoria);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($categoria);
         $entityManager->flush();

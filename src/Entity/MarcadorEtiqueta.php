@@ -19,13 +19,14 @@ class MarcadorEtiqueta
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Marcador::class, inversedBy="marcadorEtiquetas")
+     * @ORM\ManyToOne(targetEntity=Marcador::class, inversedBy="marcadorEtiquetas",cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $Marcador;
 
     /**
      * @ORM\ManyToOne(targetEntity=Etiqueta::class, cascade={"persist"})
-     * @ORM\JoinColumn(name="etiqueta_id",referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $etiqueta;
 
