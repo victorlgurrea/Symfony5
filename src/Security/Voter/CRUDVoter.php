@@ -65,7 +65,7 @@ class CRUDVoter extends Voter
 
     private function canDelete($subject, User $usuario) {
 
-        if ($this->security->isGranted('ROLE_SUPER_ADMIN') || $usuario === $subject->getUsuario()) {
+        if ($this->security->isGranted('ROLE_ADMIN') || $usuario === $subject->getUsuario()) {
             return true;
         }
         return  false;
@@ -76,7 +76,7 @@ class CRUDVoter extends Voter
     }
 
     private function canEdit($subject, User $usuario) {
-        if ($this->security->isGranted('ROLE_SUPER_ADMIN') || $usuario === $subject->getUsuario()) {
+        if ($this->security->isGranted('ROLE_ADMIN') || $usuario === $subject->getUsuario()) {
             return true;
         }
         return  false;

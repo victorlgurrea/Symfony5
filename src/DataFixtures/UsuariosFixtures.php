@@ -24,6 +24,7 @@ class UsuariosFixtures extends Fixture
         $usuario = new User();
         $usuario->setEmail('admin@admin.com');
         $usuario->setRoles(['ROLE_ADMIN']);
+        $usuario->setActivo(true);
         $usuario->setPassword($this->userPasswordEncoder->encodePassword(
             $usuario,
             'admin'
@@ -37,6 +38,7 @@ class UsuariosFixtures extends Fixture
         $usuario = new User();
         $usuario->setEmail('user@user.com');
         $usuario->setRoles(['ROLE_USER']);
+        $usuario->setActivo(true);
         $usuario->setPassword($this->userPasswordEncoder->encodePassword(
             $usuario,
             'user'

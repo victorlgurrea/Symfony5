@@ -2,9 +2,11 @@
 
 {% block title %}Login{% endblock %}
 
+
 {% block contenedor_principal %}
 <div class="row">
     <div class="col-4 offset-xl-4">
+    {% include 'comunes/_mensajes.html.twig' %}
         <form method="post">
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -32,11 +34,18 @@
                         <input type="checkbox" name="_remember_me"> Recordar
                     </label>
                 </div>
+            <div class="row">
+                <div class="col-6">
+                    <button class="btn mt-2 btn-outline-success" type="submit">
+                        Acceder
+                    </button>
+                </div>
+                <div class="col-6 text-right">
+                    <a class="btn mt-2 btn-outline-primary" href="{{ path('app_register')}}">Registrar Usuario</a>
+                </div>
+            </div>
+           
             
-
-            <button class="btn mt-2 btn-outline-primary" type="submit">
-                Acceder
-            </button>
         </form>
     </div>
 </div>
