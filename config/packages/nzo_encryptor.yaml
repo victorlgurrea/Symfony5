@@ -1,0 +1,4 @@
+nzo_encryptor:
+  secret_key: '$wqwasdasdsadswadasd'
+  secret_iv : '$klvmvrivj'
+  cipher_algorithm : 'aes-256-ctr'

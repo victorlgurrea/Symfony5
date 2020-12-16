@@ -1,9 +1,14 @@
-<p>
-    <h1>Bienvenido {{ user.email }}!!</h1>
-</p>
-<p>
-    <a href="{{ url_activa_usuario }}" class="btn btn-outline-success">Activa tu cuenta</a>
-</p>
-<p class="text-center">
-    <img src="https://media.istockphoto.com/vectors/cute-white-robot-character-vector-vector-id1187576166?b=1&k=6&m=1187576166&s=612x612&w=0&h=mvMVZc857jMdhFENqY0JCK0jc2JajMbQUKz8t9OB1xk=" width="300px" height="300px"/>
-</p>
+<div class="row text-center">
+    <div class="col-12 text-center">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://media.istockphoto.com/vectors/cute-white-robot-character-vector-vector-id1187576166?b=1&k=6&m=1187576166&s=612x612&w=0&h=mvMVZc857jMdhFENqY0JCK0jc2JajMbQUKz8t9OB1xk=" witdh="200px" height="200px" alt="Card image cap">
+            <div class="card-body">
+                <h1 class="card-title text-center">Bienvenido {{ user.email }}!!</h1>
+                <p class="card-text">Registrate y disfruta de las subastas!!</p>
+            </div>
+            <div class="card-body text-center">
+                <a href="{{ url_activa_usuario }}" class="btn btn-outline-success">Activa tu cuenta</a>
+            </div>
+        </div>
+    </div>
+</div>

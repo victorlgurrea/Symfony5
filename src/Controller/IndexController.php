@@ -63,7 +63,9 @@ class IndexController extends AbstractController
         } else {
             $marcadores = $marcadorRepository->buscarTodos($pagina, self::ELEMENTOS_POR_PAGINA);
         }
-        
+        $marcador = $marcadorRepository->findAll();
+        dump($marcador);
+        //die();
         return $this->render('index/index.html.twig', [
             'marcadores' => $marcadores,
             'pagina' => $pagina,

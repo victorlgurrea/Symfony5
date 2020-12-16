@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Services\Mailer;
 use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,8 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class RegistrationController extends AbstractController
 {
@@ -28,7 +31,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/registro", name="app_register", priority = 4)
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, Mailer $mailer,UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -48,14 +51,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('BotSubastas@subastas.com', 'Subastas Mail Bot'))
-                    ->to($user->getEmail())
-                    ->subject('Confirma tu correo')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+            $mailer->email_registro_usuario($user);
             
             $this->addFlash('success', "Usuario registrado correctamente, revise su correo");
 
@@ -98,20 +94,21 @@ class RegistrationController extends AbstractController
     }
 
     /**
-    * @Route("/terminos-de-uso", name="app_activar_usuario", priority = 6)
+    * @Route("/registro/activar-usuario/{token}", name="app_activar_usuario",priority = 6)
     */
-    public function activarCuentaUsuario(string $token, UserRepository $userRepository): Response
+    public function activarCuentaUsuario(string $token, UserRepository $userRepository, Encryptor $encryptor ): Response
     {
-        $datosToken = array(json_decode($token));
-        $fechaActual = new \DateTime();
-        $fechaExpiracion = new \DateTime($datosToken['fechaExpiracion']);
+        $tokenJson = $encryptor->decrypt($token);
+        $datosToken = (array)json_decode($tokenJson);
+        $fechaActual = new DateTime();
+        $fechaExpiracion = new DateTime($datosToken['fechaExpiracion']);
 
         $idUsuario = $datosToken['id'];
-        if($fechaActual > $fechaExpiracion){
+        if($fechaActual < $fechaExpiracion){
             throw $this->createNotFoundException();
         }
 
-        $usuario = $userRepository->findOneBy($idUsuario);
+        $usuario = $userRepository->findOneById($idUsuario);
         $usuario->setActivo(true);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush($usuario);
