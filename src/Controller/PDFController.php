@@ -47,7 +47,7 @@ class PDFController extends AbstractController
                 200,
                 [
                     'Content-Type' => 'application/pdf',
-                    'Content-disposition' => 'attachment;filename="informe.pdf"',
+                    'Content-disposition' => 'attachment;filename="terminos_de_uso.pdf"',
                 ]
             );
     }
