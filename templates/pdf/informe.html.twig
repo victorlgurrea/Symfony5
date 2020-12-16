@@ -1,0 +1,45 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+        Subastas
+    </title>
+      <link rel="stylesheet" href="{{ absolute_url('/css/bootstrap.min.css')}}" />
+      <link rel="stylesheet" href="{{ absolute_url('/css/open-iconic-bootstrap.css') }}" />
+      <link rel="stylesheet" href="{{ absolute_url('/css/offcanvas.css') }}" />
+      <link rel="stylesheet" href="{{ absolute_url('/css/general.css') }}" />
+  </head>
+  <body class="bg-light">
+    <div class="row">
+        <div class="col-12">
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Url</th>
+                        <th>Fecha</th>
+                        <th>Favorito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for marcador in marcadores %}
+                    <tr>
+                        <td>{{ marcador.nombre}}</td>
+                        <td>{{ marcador.url}}</td>
+                        <td>{{ marcador.creado|date('Y-m-d H:i:s')}}</td>
+                        <td>{{ marcador.favorito == 1 ? 'Si' : 'No' }}</td>
+                    </tr>
+                {% endfor %} 
+                </tbody>
+            </table>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+
+

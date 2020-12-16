@@ -1,11 +1,19 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Términos de uso{% endblock %}
-
-{% block contenedor_principal %}
-   <div class="row">
-    <div class="col-12">
-        <h1 class="text-center">Términos de uso de la app</h1>
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+        Términos de uso
+    </title>
+      <link rel="stylesheet" href="{{ absolute_url('/css/bootstrap.min.css')}}" />
+      <link rel="stylesheet" href="{{ absolute_url('/css/open-iconic-bootstrap.css') }}" />
+      <link rel="stylesheet" href="{{ absolute_url('/css/offcanvas.css') }}" />
+      <link rel="stylesheet" href="{{ absolute_url('/css/general.css') }}" />
+  </head>
+  <body class="bg-light">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Términos de uso de la app</h1>
             <p>Estos Términos y Condiciones de Uso regulan las reglas a que se sujeta la utilización de la APP
                 SUBASTAS (en adelante, la APP de Victor), que puede descargarse desde repositorio de GIT https://github.com/victorlgurrea/Symfony5.git
                 La descarga o utilización de la APP atribuye la condición de Usuario a quien lo haga e implica la aceptación de todas las condiciones incluidas en este documento
@@ -98,13 +106,8 @@
                 resolución de cualquier conflicto relativo a su interpretación o aplicación, el Usuario se somete
                 expresamente a la jurisdicción de los tribunales de (España).
             </p>
+        </div>
     </div>
-    <div class="col-6">
-        <p><span class="oi oi-star text-danger">Registrandose acepta estos términos y condiciones</span></p>
-    </div>
-    <div class="col-6"><div class="float-right"><a class="btn btn-outline-success" href="{{ path('app_descargar_terminos') }}" title="Descargar informe"><i class="fas fa-download"></i></a></div></div>
-    <div class="col-12 text-center">
-        <a class="btn btn-outline-info" href="{{ path('app_register')}}"><i class="fas fa-undo"></i> Volver</a>
-    </div>
-   </div>
-{% endblock %}
+  </body>
+</html>
+

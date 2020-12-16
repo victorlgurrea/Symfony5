@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\EtiquetaRepository;
 use App\Repository\MarcadorRepository;
@@ -17,7 +18,7 @@ class BusquedaController extends AbstractController
     /**
      * @Route("/buscar-etiquetas", name="app_buscar_etiquetas")
      */
-    public function buscarEtiquetas(EtiquetaRepository $etiquetaRepository, Request $request)
+    public function buscarEtiquetas(EtiquetaRepository $etiquetaRepository, Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
            $busqueda = $request->get('q');

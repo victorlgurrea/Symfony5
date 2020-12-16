@@ -4,8 +4,8 @@
     {% include 'comunes/_mensajes.html.twig' %}
 
     <div class="my-3 p-3 bg-white rounded box-shadow">
-    <h6 class="border-bottom border-gray pb-2 mb-0">
-      Subastas
+    <h6 class="border-bottom border-gray pb-4 mb-0">
+      Subastas <div class="float-right"><a class="btn btn-outline-success" href="{{ path('app_descargar_informe_pdf') }}" title="Descargar informe"><i class="fas fa-download"></i></a></div>
     </h6>
     {% if marcadores is not empty %}
     {% for marcador in marcadores %}
